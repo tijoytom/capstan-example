@@ -3,8 +3,9 @@
 # This work is open source software, licensed under the terms of the
 # BSD license as described in the LICENSE file in the top-level directory.
 
-CXXFLAGS  = -g -Wall -std=c++11 -fPIC $(INCLUDES)
-
+#CXXFLAGS  = -g -Wall -std=c++11 -fPIC $(INCLUDES)
+CXXFLAGS  = -g -Wall -lstdc++ -fPIC $(INCLUDES)
+CXX = clang-3.5
 TARGET = hello
 
 OBJ_FILES = hello.o

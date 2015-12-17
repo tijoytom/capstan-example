@@ -1,7 +1,7 @@
 # Capstan Example
 
-This is a "hello world" C++ application that shows how to use Capstan to
-package and run native applications on OSv.
+This is a "hello world" C# application that shows how to use Capstan to
+package and run  C# CoreRT native applications on OSv.
 
 ## Prerequisites
 
@@ -20,15 +20,29 @@ This makes Capstan automatically pull a base image, invoke ``make`` to
 build the software, build an image, and finally launch the application
 under QEMU.
 
-The ``run`` command will never overwrite the created image.  If you make
-changes to the application, you need rebuild the image with:
+test.so : this shared library was generated using CoreRT native toolchain 
 
-```
-$ capstan build
-```
+Here are the instructions to build the test.so from your C# source files 
 
-You can also launch the example application under VirtualBox with:
+Step1 : 
 
-```
-$ capstan run -p vbox
-```
+Compile to  IL and then to C#  :  dotnet compile --native -cpp
+The above step should generate a test.cpp 
+
+Step2:
+Compile the generated cpp to a position independent shared library
+
+
+clang-3.5 -g -lstdc++ -lrt -Wno-invalid-offsetof -shared -fPIC -pthread 
+ -I /home/tijoytom/unikernel/corert/bin/tools/cli/bin/appdepsdk/CPPSdk/ubuntu.14.04 
+ -I /home/tijoytom/unikernel/corert/bin/tools/cli/bin/appdepsdk/CPPSdk 
+ /home/tijoytom/unikernel/corert/bin/tools/cli/bin/test/obj/Debug/dnxcore50/test.cpp 
+ /home/tijoytom/unikernel/corert/bin/tools/cli/bin/appdepsdk/CPPSdk/ubuntu.14.04/lxstubs.cpp 
+ /home/tijoytom/unikernel/corert/bin/tools/cli/bin/libbootstrappercpp.a 
+ /home/tijoytom/unikernel/corert/bin/tools/cli/bin/libPortableRuntime.a 
+ /home/tijoytom/unikernel/corert/bin/tools/cli/bin/libSystem.Private.CoreLib.Native.a 
+ /home/tijoytom/unikernel/corert/bin/tools/cli/bin/appdepsdk/CPPSdk/ubuntu.14.04/x64/libSystem.Native.a 
+ -lm -ldl -o "/home/tijoytom/unikernel/corert/bin/tools/cli/bin/test/bin/Debug/dnxcore50/native/test.so"
+
+
+
